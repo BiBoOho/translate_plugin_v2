@@ -1,0 +1,38 @@
+name.ja	既読チェックプラグイン
+name.en	Translation plugin
+name.zh	ສະ​ຫນັບ​ສະ​ຫນູນ plugin ລວມ​
+
+description.ja	このプラグインは、テキストまたはコンテンツをある言語から別の言語に翻訳できます。
+description.en	This plugin can translation of text or content from one language to another.
+description.zh	ປັ໊ກອິນແປພາສາແມ່ນເຄື່ອງມືທີ່ຊ່ວຍໃຫ້ສາມາດແປຂໍ້ຄວາມ ຫື ເນື້ອໃນ ຈາກພາສາໜື່ງ ໄປຫາອິກພາສາໜື່ງໄດ້.
+
+icon	image/translation-icon.png
+homepage_url
+
+desktop.js	js/jquery-2.2.4.min.js
+desktop.js	js/sweetalert2.all.js
+desktop.js	js/kuc.min.js
+desktop.js	js/axios.min.js
+desktop.js	common/RsComAPI.js
+desktop.js	language_pack/language_pack.js
+desktop.js	js/lang.js
+desktop.js	js/desktop.js	C
+desktop.css	css/51-modern-default.css
+desktop.css	css/RsComAPI.css
+desktop.css	css/desktop.css	C
+
+config.html	html/config.html
+
+config.js	js/jquery-2.2.4.min.js
+config.js	js/sweetalert2.all.js
+config.js	js/kuc.min.js
+config.js	common/RsComAPI.js
+config.js	language_pack/language_pack.js
+config.js	js/config.js	C
+config.css	css/51-modern-default.css
+config.css	css/RsComAPI.css
+config.css	css/config.css	C
+
+required	default_language
+required	language_list
+required	translate_fields

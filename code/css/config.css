@@ -1,0 +1,116 @@
+/* ============ */
+
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-input-text {
+  width: 100%;
+}
+
+.kintoneplugin-table-th{
+  width: 5rem;
+}
+
+.drag-handle {
+  cursor: move;
+  margin-right: 20px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+}
+
+#table_lang td:first-child { 
+  border-bottom-style: hidden;
+  border-top-style: hidden;
+  border-left-style: hidden;
+}
+
+.drag-handle{
+  cursor: move;
+  margin-right: 20px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  border: 1px solid black;
+  border-radius: 15%;
+  height: 25px;
+  margin-top: 1rem;
+  background: transparent;
+}
+
+.kintoneplugin-title {
+  margin-left: 4.5rem;
+}
+
+#select-1 {
+  margin-left: 4.5rem;
+}
+
+#table_translate_field{
+  margin-left: 4.5rem;
+}
+
+#button {
+  margin-left: 4.5rem;
+}
+
+.radio-box {
+  margin-left: 4.5rem;
+  margin-bottom: 40px;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  width: 490px;
+}
+
+.tran-engine-name {
+  width: 230px;
+}
+
+.tran-engin-url {
+  width: 400px;
+}
+
+.engine-url {
+  width: 100%;
+}
+
+.api-container {
+  margin-left: 4.5rem;
+  margin-bottom: 20px;
+}
+
+#kintoneplugin-setting-tbody > tr:first-child {
+  display: none !important;
+}
+
+#table_translate_field tbody > tr:first-child {
+  display: none !important;
+}
+
+#language_code {
+  display: none !important;
+}
+
+.lang-content {
+  display: flex;
+}
+
+.set-border {
+  border : 1px solid red;
+}
+
+.reset-container {
+  margin: 30px 70px;
+}
+
+/* arrow down */
+.reset-container span{
+  font-size: 1rem;
+  margin-left: 20px;
+}
+

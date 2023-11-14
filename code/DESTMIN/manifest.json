@@ -1,0 +1,69 @@
+{
+	"manifest_version": 1,
+	"version": 202311140945,
+	"type": "APP",
+	"name": {
+		"ja": "既読チェックプラグイン",
+		"en": "Translation plugin",
+		"zh": "ສະ​ຫນັບ​ສະ​ຫນູນ plugin ລວມ​"
+	},
+	"description": {
+		"ja": "このプラグインは、テキストまたはコンテンツをある言語から別の言語に翻訳できます。",
+		"en": "This plugin can translation of text or content from one language to another.",
+		"zh": "ປັ໊ກອິນແປພາສາແມ່ນເຄື່ອງມືທີ່ຊ່ວຍໃຫ້ສາມາດແປຂໍ້ຄວາມ ຫື ເນື້ອໃນ ຈາກພາສາໜື່ງ ໄປຫາອິກພາສາໜື່ງໄດ້."
+	},
+	"icon": "image/translation-icon.png",
+	"homepage_url": {
+	},
+	"desktop": {
+		"js": [
+			"js/jquery-2.2.4.min.js",
+			"js/sweetalert2.all.js",
+			"js/kuc.min.js",
+			"js/axios.min.js",
+			"common/RsComAPI.js",
+			"language_pack/language_pack.js",
+			"js/lang.js",
+			"js/desktop.min.js"
+		],
+		"css": [
+			"css/51-modern-default.css",
+			"css/RsComAPI.css",
+			"css/desktop.min.css"
+		]
+	},
+	"mobile": {
+		"js": [
+			"js/jquery-2.2.4.min.js",
+			"js/sweetalert2.all.js",
+			"js/kuc.min.js",
+			"js/axios.min.js",
+			"common/RsComAPI.js",
+			"language_pack/language_pack.js",
+			"js/lang.js",
+			"js/desktop.min.js"
+		],
+		"css": [
+			"css/51-modern-default.css",
+			"css/RsComAPI.css",
+			"css/desktop.min.css"
+		]
+	},
+	"config": {
+		"html": "html/config.html",
+		"js": [
+			"js/jquery-2.2.4.min.js",
+			"js/sweetalert2.all.js",
+			"js/kuc.min.js",
+			"common/RsComAPI.js",
+			"language_pack/language_pack.js",
+			"js/config.min.js"
+		],
+		"css": [
+			"css/51-modern-default.css",
+			"css/RsComAPI.css",
+			"css/config.min.css"
+		],
+		"required_params": ["default_language","language_list","translate_fields"]
+	}
+}

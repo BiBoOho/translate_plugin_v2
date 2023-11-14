@@ -1,0 +1,46 @@
+name.ja	Bok.eReportPDF(PDF帳票作成)
+name.en	Bok.eReportPDF(report PDF)
+name.zh	Bok.eReportPDF(报告输出PDF)
+
+description.ja	PDFの帳票をクライアントサイドで作成
+description.en	Create PDF form on client side
+description.zh	在客户端创建PDF表单
+
+icon	image/iconPDF.png
+homepage_url
+
+desktop.js	js/jquery-2.2.4.min.js
+desktop.js	../COMMON/i18n.js	C
+desktop.js	js/qrcode.js	C
+desktop.js	js/bwip-js.js	C
+desktop.js	../COMMON/sweetalert2.all.js	C
+desktop.js	js/pdfkit.standalone.min.js
+desktop.js	js/blob-stream.js	C
+desktop.js	js/jszip.min.js
+desktop.js	js/FileSaver.js	C
+desktop.js	../COMMON/RsComAPI.js	C
+desktop.js	js/convertDefine.js	C
+desktop.js	js/desktop.js	C
+desktop.css	../COMMON/RsComAPI.css
+desktop.css	css/51-modern-default.css
+
+config.html	html/config.html
+
+config.js	js/jquery-2.2.4.min.js
+config.js	../COMMON/i18n.js	C
+config.js	../COMMON/jsrender.min.js
+config.js	js/jquery-ui.min.js
+config.js	../COMMON/sweetalert2.all.js	C
+config.js	js/fabric.min.js
+config.js	js/Sortable.min.js
+config.js	js/pdf.js	C
+config.js	js/pdf.worker.js	C
+config.js	../COMMON/RsComAPI.js	C
+config.js	js/convertDefine.js	C
+config.js	js/config.js	C
+config.css	css/jquery-ui.css
+config.css	css/51-modern-default.css
+config.css	../COMMON/RsComAPI.css
+config.css	css/config.css
+
+required	a

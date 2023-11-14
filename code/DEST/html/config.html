@@ -1,0 +1,223 @@
+<section class="settings">
+  <form class="js-submit-settings">
+
+    <div class="kintoneplugin-title">Translate direction <span class="kintoneplugin-require">*</span></div> 
+    <div class="kintoneplugin-input-radio radio-box">
+      <span class="kintoneplugin-input-radio-item">
+        <input type="radio" name="tran_direction" value="from" id="from" checked>
+        <label for="from">Translate from specified language</label>
+      </span>
+      <span class="kintoneplugin-input-radio-item">
+        <input type="radio" name="tran_direction" value="to" id="to">
+        <label for="to">Translate to specified language</label>
+      </span>
+      </div>
+
+    <div class="kintoneplugin-title">Translation engine <span class="kintoneplugin-require">*</span></div> 
+    <div class="kintoneplugin-input-radio radio-box">
+      <span class="kintoneplugin-input-radio-item">
+        <input type="radio" name="engine" value="google_tran_api" id="radio_google_translate" checked>
+        <label for="radio_google_translate">Google translate API</label>
+      </span>
+      <span class="kintoneplugin-input-radio-item">
+        <input type="radio" name="engine" value="deepl_api" id="radio_deppl_translate">
+        <label for="radio_deppl_translate">DeepL API</label>
+      </span>
+      <span class="kintoneplugin-input-radio-item">
+        <input type="radio" name="engine" value="my_memory_api" id="radio_memory_traslate">
+        <label for="radio_memory_traslate">My Memory API</label>
+      </span>
+      </div>
+
+      <div class="kintoneplugin-input-outer api-container">
+        <table>
+          <thead>
+            <tr>
+              <td>URL</td>
+              <td>header 1</td>
+              <td>header 2</td>
+              <td>header 3</td>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>   
+              <td class="tran-engin-url">
+                <div class="kintoneplugin-table-td-control">
+                  <div class="kintoneplugin-table-td-control-value">
+                    <div class="kintoneplugin-input-outer engine-url">
+                      <input class="kintoneplugin-input-text"  id="tran_url" type="text">
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="tran-engin-parameter">
+                <div class="kintoneplugin-table-td-control">
+                  <div class="kintoneplugin-table-td-control-value">
+                    <div class="kintoneplugin-input-outer engine-parameter">
+                      <input class="kintoneplugin-input-text" id="header_1" type="text">
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="tran-engin-parameter">
+                <div class="kintoneplugin-table-td-control">
+                  <div class="kintoneplugin-table-td-control-value">
+                    <div class="kintoneplugin-input-outer engine-parameter">
+                      <input class="kintoneplugin-input-text" id="header_2" type="text">
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="tran-engin-parameter">
+                <div class="kintoneplugin-table-td-control">
+                  <div class="kintoneplugin-table-td-control-value">
+                    <div class="kintoneplugin-input-outer engine-parameter">
+                      <input class="kintoneplugin-input-text" id="header_3" type="text">
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+    <div class="kintoneplugin-title">Language list</div>
+    <div class="kintoneplugin-input-outer">
+      <table id="table_language_list" class="kintoneplugin-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="kintoneplugin-table-th"><span class="title">Language</th>
+            <th class="kintoneplugin-table-th"><span class="title">Language ISO</span></th>
+            <th id="language_code" class="kintoneplugin-table-th"><span class="title">Language code</span></th>
+            <th class="kintoneplugin-table-th"><span class="title">Button label</span></th>
+          </tr>
+        </thead>
+        <tbody id="kintoneplugin-setting-tbody">
+          <tr draggable="true" class="item">
+            <td><span class="drag-handle">&#9776;</span></td>
+            <td>
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <div class="kintoneplugin-select-outer">
+                    <div class="kintoneplugin-select">
+                      <select name="language-selection">
+                        <option value="-----">-----</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <span>
+                    <input class="kintoneplugin-input-text" name="code_iso" value="" disabled/>
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td id="language_code">
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <span>
+                    <input class="kintoneplugin-input-text" name="lang_code" value="" disabled/>
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <span>
+                    <input class="kintoneplugin-input-text" name="button_label" value="" />
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td class="kintoneplugin-table-td-operation">
+              <button type="button" class="kintoneplugin-button-add-row-image addRowLanguageList" id="addRowLanguageList" title="Add row"></button>
+              <button type="button" class="kintoneplugin-button-remove-row-image removeRowLanguageList" title="Delete this row"></button>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="reset-container">
+      <button type="button" class="kintoneplugin-button-dialog-ok reset-btn">Reflection <span>&#8595;</span></button>  
+    </div>
+
+    <div class="block">
+      <div class="kintoneplugin-title">Default Language</div> 
+      <div class="lang-content">
+        <div id="select-1" class="kintoneplugin-select-outer">
+          <div class="kintoneplugin-select">
+            <select name="default_lang">
+              <option value>-----</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="kintoneplugin-title">Translate fields</div> 
+    <div class="kintoneplugin-input-outer">
+      <table class="kintoneplugin-table" id="table_translate_field">
+        <thead>
+          <tr>
+            <th class="kintoneplugin-table-th"><span class="title">ITEM <span class="kintoneplugin-require">*</span></span></th>
+            <th class="kintoneplugin-table-th"><span class="title">Space placement for button</span></th>
+            <th class="kintoneplugin-table-th-blankspace"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            
+            <td>
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <span>
+                    <input class="kintoneplugin-input-text" name="item_code" type="text"/>
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="kintoneplugin-table-td-control">
+                <div class="kintoneplugin-table-td-control-value">
+                  <div class="kintoneplugin-input-outer">
+                    <div class="kintoneplugin-select">
+                      <select name="select_field_space">
+                        <option value="">-----</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+           
+            <td style="display: flex;" class="kintoneplugin-table-td-operation">
+              <button type="button" class="kintoneplugin-button-add-row-image addRowTranslateField" title="Add row"></button>
+              <button type="button" class="kintoneplugin-button-remove-row-image removeRowTranslateField" title="Delete this row"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p id="button" class="kintoneplugin-row">
+        <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel" id="cancel">Cancel</button>
+        <button type="button" class="kintoneplugin-button-dialog-ok" id="save">Save</button>
+    </p>
+  </form>
+</section>
