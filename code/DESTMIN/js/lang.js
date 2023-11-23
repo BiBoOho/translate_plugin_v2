@@ -181,7 +181,11 @@
           }
         }
       }
-      kintone.app.record.set(record);
+      try {
+        kintone.app.record.set(record);
+      } catch (error) {
+        throw new Error(`フィールドコード${defCode}が存在しません`);
+      }
     }
   }
 
