@@ -19,7 +19,7 @@ jQuery.noConflict();
     let param = { app: kintone.app.getId() };
     FIELDS = await kintone.api("/k/v1/preview/form", "GET", param);
   } catch (error) {
-    return Swal10.fire('Error', error.message || error, 'error');
+    return Swal10.fire('', error.message || error, 'error');
   }
   
 
@@ -95,21 +95,16 @@ jQuery.noConflict();
       //check if have language not match
       if (!isMatch) {
         Swal10.fire({
-                  title: 'Are you sure?',
-                  text: "Have language not match",
+                  html: "言語一覧が変わります<br>変更してもよろしいでしょうか？",
                   icon: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
                   cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, delete it!'
+                  cancelButtonText: 'キャンセル',
+                  confirmButtonText: 'はい'
             }).then((result) => {
                   if (result.isConfirmed) {
                     createLanguageSelectionList(languageSelectedVal, getCurrentEngine)
-                      Swal10.fire(
-                        'Deleted!',
-                        'Your language has been deleted.',
-                        'success'
-                      );
                   }else if(result.isDismissed){
                     checkEngine(previous_engine);
                     $("input[name='engine'][value="+previous_engine+"]").prop("checked", true);
@@ -231,12 +226,17 @@ jQuery.noConflict();
                   //set value to translate fields table
                   $(`#table_translate_field tbody tr:eq(${i})> td select[name='select_field_translate']`).each(function (index, field) {
                     let optionVar = translateFields[i - 1].target_fields[index].field;
-                    $(field).val(optionVar).change();
+                    
+                    if ($(field).find(`option[value='${optionVar}']`).length > 0) {
+                      $(field).val(optionVar).change();
+                    }else {
+                      $(field).val('').change();
+                    }
                   });
                 }
               }
           } catch (error) {
-            return Swal10.fire('Error', error.message || error, 'error');
+            return Swal10.fire('', error.message || error, 'error');
           }
       }
 
@@ -439,18 +439,10 @@ jQuery.noConflict();
       let lang_list_count = $("#table_language_list tbody > tr").length;
       for (let j = 2; j <= lang_list_count; j++) {
         if ($("#table_language_list tbody > tr:nth-child("+ j +") select[name='language-selection'] option:selected").val() == "-----") {
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Please select the language!!",
-          });
+          Swal10.fire({icon: "error",title: "",text: "言語を選択してください！"});
           return
         }else if ($("#table_language_list tbody > tr:nth-child("+ j +") input[name='button_label']").val() == "") {
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Please enter the Button label!!",
-          });
+          Swal10.fire({icon: "error",title: "",text: "表示言語ラベルを入力してください!"});
           return
         }
       }
@@ -459,11 +451,7 @@ jQuery.noConflict();
         // Target value to check
         let targetValue = $(this).val();
         if(targetValueCheck.includes(targetValue)){
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Your language list choices have the same language.!!",
-          });
+          Swal10.fire({icon: "error",title: "",text: "翻訳対象言語一覧が重複しています!"});
           foundDuplicate = true;
         }
         else{
@@ -496,7 +484,7 @@ jQuery.noConflict();
         $("select[name='default_lang'] > option").remove();
         $("#table_translate_field > thead > tr > th:nth-child(n+3)").remove();
         $("#table_translate_field > tbody > tr:nth-child(n+1) > td:nth-child(n+3)").remove();
-        $("select[name='default_lang']").append(new Option("-----", "-----"));
+        $("select[name='default_lang']").append(new Option("-----", ""));
 
         for (let i = 2; i <= lang_list_count; i++) {
           let trValCode = $("#table_language_list tbody > tr:nth-child("+ i +") input[name='code_iso']").val();
@@ -553,31 +541,19 @@ jQuery.noConflict();
     confirmButton.on("click", async function () {
       let invalidFieldExisted = false;
       if ($(translate_url).val() == "") {
-        Swal10.fire({
-          icon: "error",
-          title: "Oops...",
-          html: `Please enter URL engine!!!`,
-        });
+        Swal10.fire({icon: "error",title: "",html: `翻訳エンジンのURLを入力してください!`});
         return false;
       } 
 
         //validation the default language and language list
         let languageListRow = $("#table_language_list tbody tr");
         if (languageListRow.length <= 2 && $(`#table_language_list tbody tr:eq(${1})> td select[name='language-selection'] option:selected`).val() === "-----") {
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            html: `Please select language list!`,
-          });
+          Swal10.fire({icon: "error",title: "",html: `言語を選択してください！`});
           return false;
         } else if ($(`#table_language_list tbody tr:eq(${1})> td select[name='language-selection'] option:selected`).val() !== "-----" && 
                     $("select[name='default_lang'] option").length == 1) 
         {
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            html: `Language list and Lnaguage default not match!<br>Plase click Reflection button!`,
-          });
+          Swal10.fire({icon: "error",title: "",html: `「 反映」ボタン押して、<br>翻訳対象言語一覧を反映してください!`});
           return false;
         } else if ( $("select[name='default_lang'] option").length == languageListRow.length) {
           $("select[name='default_lang'] option").slice(1).each(function (index) {
@@ -587,21 +563,13 @@ jQuery.noConflict();
               //check Option match with code iso
               if ($(`#table_language_list tbody tr:eq(${ operationIndex + 1 })> td input[name='code_iso']`).val() !== optionValue) {
                 invalidFieldExisted = true;
-                Swal10.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  html: `Language list and Lnaguage default not match!<br>Plase click Reflection button!`,
-                });
+                Swal10.fire({icon: "error",title: "",html: `「 反映」ボタン押して、<br>翻訳対象言語一覧を反映してください!`});
                 return false;
               }
             });
         } else if ($("select[name='default_lang'] option").length != languageListRow.length) {
           invalidFieldExisted = true;
-          Swal10.fire({
-            icon: "error",
-            title: "Oops...",
-            html: `Language list and Lnaguage default not match!<br>Plase click Reflection button!`,
-          });
+          Swal10.fire({icon: "error",title: "",html: `「 反映」ボタン押して、<br>翻訳対象言語一覧を反映してください!`});
           return false;
         }
   
@@ -610,27 +578,20 @@ jQuery.noConflict();
   
           let conditionForCheck = false;
           let ItemValueCheck = [];
+          let rowItemValue = '';
           for (let k = 1; k < space_length; k++) {
-              const rowItemValue = $(`#table_translate_field tbody tr:eq(${k})> td input[type="text"]`).val();
+              rowItemValue = $(`#table_translate_field tbody tr:eq(${k})> td input[type="text"]`).val();
   
               // Do check for null values or have the same value
               if (rowItemValue === "") {
                 conditionForCheck = true;
                 invalidFieldExisted = true;
-                Swal10.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  html: `Please Input all of Item!!`,
-                });
+                Swal10.fire({icon: "error",title: "",html: `項目コードを入力してください!`});
                 return false;
               } else if (ItemValueCheck.includes(rowItemValue)){
                 invalidFieldExisted = true;
                 conditionForCheck = true;
-                Swal10.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  html: `Have the same Item "${rowItemValue}"!!`,
-                });
+                Swal10.fire({icon: "error",title: "",html: `項目コードが${rowItemValue}重複しています!`});
                 return false;
               }
               else{
@@ -640,61 +601,41 @@ jQuery.noConflict();
 
           if (!conditionForCheck) {
             for (let k = 1; k < space_length; k++) {
-              const space_fields = k;
-              let emptyValCheck = 2;
               let sameFieldCheck = [];
               let sameSubTableCheck = [];
               let sameTypeFieldCheck = [];
               let sameTypeFieldCheckSupTable = [];
               let subTableCheck = false;
               let notSubTableCheck = false;
-              for await (const option of $(`#table_translate_field > tbody > tr:eq(${space_fields}) > td select[name='select_field_translate'] option:selected`)) {
+              for await (const option of $(`#table_translate_field > tbody > tr:eq(${k}) > td select[name='select_field_translate'] option:selected`)) {
                 let selectedFieldVal = $(option).val();
                 let selectedFieldSubtableCode = $(option).attr("subtable_check");
 
+                //check when user selected the same field in row
+                if (sameFieldCheck.includes(selectedFieldVal)) {
+                  Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、２フィールド以上指定してください!`});
+                  return;
+                }else if (selectedFieldVal != "") {
+                  sameFieldCheck.push(selectedFieldVal);
+                }
+
                 //check when user not selected the same table in row
                 if (!sameSubTableCheck.includes(selectedFieldSubtableCode) && sameSubTableCheck.length >= 1 && selectedFieldSubtableCode) {
-                  Swal10.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: `If a ${sameSubTableCheck[0]} is selected in any of the other options, it must be a ${sameSubTableCheck[0]}.!!`,
-                  });
+                  Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、同じタイプのフィールドを指定してください!`});
                   invalidFieldExisted = true;
                   return;
                 }else{
                   sameSubTableCheck.push(selectedFieldSubtableCode);
                 }
 
-                //check when user selected the same field in row
-                if (sameFieldCheck.includes(selectedFieldVal)) {
-                    Swal10.fire({
-                      icon: "error",
-                      title: "Oops...",
-                      html: `Have the same fields!!`,
-                    });
-                    return;
-                }else if (selectedFieldVal != "") {
-                  sameFieldCheck.push(selectedFieldVal);
-                }
-
-                // if have selected field
-                if (selectedFieldVal) {
-                  emptyValCheck-- 
-                }
-
-                for await (let item of FIELDS.properties) {
-                  const checkValname = item;
+                for await (let checkValname of FIELDS.properties) {
                   if (checkValname.type === "SUBTABLE") {
                     checkValname.fields.forEach(function (fieldsIntable) {
                       let fieldsIntableVal = fieldsIntable.code;
                       if (selectedFieldVal == fieldsIntableVal) {
                         subTableCheck = true;
                         if (!sameTypeFieldCheckSupTable.includes(fieldsIntable.type) && sameTypeFieldCheckSupTable.length >= 1) {
-                          Swal10.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            html: `If a ${sameTypeFieldCheckSupTable[0]} is selected in any of the other options, it must be a ${sameTypeFieldCheckSupTable[0]}.!!`,
-                          });
+                          Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、同じタイプのフィールドを指定してください!`});
                           invalidFieldExisted = true;
                           return;
                         }else{
@@ -706,11 +647,7 @@ jQuery.noConflict();
                     notSubTableCheck = true;
                     //Check when selected field is not the same type
                     if (!sameTypeFieldCheck.includes(checkValname.type) && sameTypeFieldCheck.length >= 1) {
-                      Swal10.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        html: `If a ${sameTypeFieldCheck[0]} is selected in any of the other options, it must be a ${sameTypeFieldCheck[0]}.!!`,
-                      });
+                      Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、同じタイプのフィールドを指定してください!`});
                       return;
                     }else{
                       sameTypeFieldCheck.push(checkValname.type);
@@ -720,22 +657,14 @@ jQuery.noConflict();
                 
                 // Check when have suptable but other selected field not be a subtable
                 if (subTableCheck && notSubTableCheck) {
-                  Swal10.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    html: `If a subtable is selected in any of the other options, it must be a subtable.!!`,
-                  });
+                  Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、同じタイプのフィールドを指定してください!`});
                   return;
                 }
               }
 
               // Check if the selected less than 2
-              if (emptyValCheck > 0) {
-                Swal10.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  html: `Each row of translate field must be selected more than 1 field `,
-                });
+              if (sameFieldCheck.length < 2) {
+                Swal10.fire({icon: "error",title: "",html: `翻訳項目定義の翻訳対象フィールドは、２フィールド以上指定してください!`});
                 return;
               }
             }
@@ -745,7 +674,7 @@ jQuery.noConflict();
       if (!invalidFieldExisted) {
         let config = setConfig();
         await kintone.plugin.app.setConfig(config, function () {
-          Swal10.fire("Complete", "successfully", "success").then(
+          Swal10.fire("保存完了", "プラグイン設定を保存しました", "success").then(
             function () {
               return window.location.href = '../../flow?app=' + kintone.app.getId() + '#section=settings';
             }

@@ -1,16 +1,14 @@
 {
 	"manifest_version": 1,
-	"version": 202311140945,
+	"version": 202311231014,
 	"type": "APP",
 	"name": {
-		"ja": "既読チェックプラグイン",
-		"en": "Translation plugin",
-		"zh": "ສະ​ຫນັບ​ສະ​ຫນູນ plugin ລວມ​"
+		"ja": "翻訳支援プラグイン",
+		"en": "Translation plugin"
 	},
 	"description": {
-		"ja": "このプラグインは、テキストまたはコンテンツをある言語から別の言語に翻訳できます。",
-		"en": "This plugin can translation of text or content from one language to another.",
-		"zh": "ປັ໊ກອິນແປພາສາແມ່ນເຄື່ອງມືທີ່ຊ່ວຍໃຫ້ສາມາດແປຂໍ້ຄວາມ ຫື ເນື້ອໃນ ຈາກພາສາໜື່ງ ໄປຫາອິກພາສາໜື່ງໄດ້."
+		"ja": "本プラグインは、テキスト項目間の自動翻訳を支援します",
+		"en": "This plugin can translation of text or content from one language to another."
 	},
 	"icon": "image/translation-icon.png",
 	"homepage_url": {
@@ -64,6 +62,6 @@
 			"css/RsComAPI.css",
 			"css/config.min.css"
 		],
-		"required_params": ["default_language","language_list","translate_fields"]
+		"required_params": ["language_list","translate_fields"]
 	}
 }

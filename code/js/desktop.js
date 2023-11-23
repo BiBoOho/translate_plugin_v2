@@ -14,7 +14,7 @@ jQuery.noConflict();
     } catch (error) {
       return Swal10.fire({
         icon: "error",
-        title: "Error",
+        title: "",
         html: error.message || error,
       });
     }
@@ -121,12 +121,28 @@ jQuery.noConflict();
                     customContextMenu.append(hoverBtn);
                     //add event handler to button
                     $(hoverBtn).on('click', async () => {
-                      const destLang = field.iso;   //filter for get lang code2 in config for use in api 
-                      let fieldType = findPropertyById(record, srcField).type //get field type from record by src field
-                      let subtable = getTableCodeByField(record, data.var); //get table code by fieldCode
-                      let tableIndex = $(e.target).closest('tr').index(); //get row index in subtable
-                      customContextMenu.remove(); //remove contextMenu
-                      await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex);
+                      try {
+                        const destLang = field.iso;   //filter for get lang code2 in config for use in api 
+                        let fieldType = findPropertyById(record, srcField).type //get field type from record by src field
+                        let subtable = getTableCodeByField(record, data.var); //get table code by fieldCode
+                        let tableIndex = $(e.target).closest('tr').index(); //get row index in subtable
+                        customContextMenu.remove(); //remove contextMenu
+                        await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex);
+                        Swal10.fire({
+                          position: "center-center",
+                          icon: "success",
+                          text: "翻訳完了しました",
+                          showConfirmButton: false,
+                          timer: 1000
+                        });
+                      } catch (error) {
+                        return Swal10.fire({
+                          icon: "error",
+                          title: "",
+                          html: error.message || error || "項目コードが存在しません",
+                        });
+                      }
+
                     })
                   }
                 });
@@ -201,11 +217,19 @@ jQuery.noConflict();
                 let fieldType = findPropertyById(record, srcField).type;
                 let subTable = getTableCodeByField(record, srcField);
                 await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1);
+                Swal10.fire({
+                  position: "center-center",
+                  icon: "success",
+                  text: "翻訳完了しました",
+                  showConfirmButton: false,
+                  timer: 1000
+                });
+                
               } catch (error) {
                 return Swal10.fire({
                   icon: "error",
-                  title: "Error",
-                  html: error.message || error,
+                  title: "",
+                  html: error.message || error || "項目コードが存在しません",
                 });
               }
             }
@@ -273,7 +297,7 @@ jQuery.noConflict();
     } catch (error) {
       return Swal10.fire({
         icon: "error",
-        title: "Error",
+        title: "",
         html: error.message || error,
       });
 

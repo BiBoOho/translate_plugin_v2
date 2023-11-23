@@ -1,10 +1,8 @@
-name.ja	既読チェックプラグイン
+name.ja	翻訳支援プラグイン
 name.en	Translation plugin
-name.zh	ສະ​ຫນັບ​ສະ​ຫນູນ plugin ລວມ​
 
-description.ja	このプラグインは、テキストまたはコンテンツをある言語から別の言語に翻訳できます。
+description.ja	本プラグインは、テキスト項目間の自動翻訳を支援します
 description.en	This plugin can translation of text or content from one language to another.
-description.zh	ປັ໊ກອິນແປພາສາແມ່ນເຄື່ອງມືທີ່ຊ່ວຍໃຫ້ສາມາດແປຂໍ້ຄວາມ ຫື ເນື້ອໃນ ຈາກພາສາໜື່ງ ໄປຫາອິກພາສາໜື່ງໄດ້.
 
 icon	image/translation-icon.png
 homepage_url
@@ -33,6 +31,5 @@ config.css	css/51-modern-default.css
 config.css	css/RsComAPI.css
 config.css	css/config.css	C
 
-required	default_language
 required	language_list
 required	translate_fields

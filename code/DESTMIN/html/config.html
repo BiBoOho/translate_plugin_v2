@@ -1,19 +1,19 @@
 <section class="settings">
   <form class="js-submit-settings">
 
-    <div class="kintoneplugin-title">Translate direction <span class="kintoneplugin-require">*</span></div> 
+    <div class="kintoneplugin-title">翻訳方向 <span class="kintoneplugin-require">*</span></div> 
     <div class="kintoneplugin-input-radio radio-box">
       <span class="kintoneplugin-input-radio-item">
         <input type="radio" name="tran_direction" value="from" id="from" checked>
-        <label for="from">Translate from specified language</label>
+        <label for="from">他言語へ翻訳</label>
       </span>
       <span class="kintoneplugin-input-radio-item">
         <input type="radio" name="tran_direction" value="to" id="to">
-        <label for="to">Translate to specified language</label>
+        <label for="to">他言語から翻訳</label>
       </span>
       </div>
 
-    <div class="kintoneplugin-title">Translation engine <span class="kintoneplugin-require">*</span></div> 
+    <div class="kintoneplugin-title">使用翻訳エンジン<span class="kintoneplugin-require">*</span></div> 
     <div class="kintoneplugin-input-radio radio-box">
       <span class="kintoneplugin-input-radio-item">
         <input type="radio" name="engine" value="google_tran_api" id="radio_google_translate" checked>
@@ -34,9 +34,9 @@
           <thead>
             <tr>
               <td>URL</td>
-              <td>header 1</td>
-              <td>header 2</td>
-              <td>header 3</td>
+              <td>ヘッダー１</td>
+              <td>ヘッダー2</td>
+              <td>ヘッダー3</td>
             </tr>
           </thead>
           <tbody>
@@ -87,16 +87,16 @@
         </table>
       </div>
 
-    <div class="kintoneplugin-title">Language list</div>
+    <div class="kintoneplugin-title">翻訳対象言語一覧</div>
     <div class="kintoneplugin-input-outer">
       <table id="table_language_list" class="kintoneplugin-table">
         <thead>
           <tr>
             <th></th>
-            <th class="kintoneplugin-table-th"><span class="title">Language</th>
-            <th class="kintoneplugin-table-th"><span class="title">Language ISO</span></th>
+            <th class="kintoneplugin-table-th"><span class="title">言語</th>
+            <th class="kintoneplugin-table-th"><span class="title">ISOコード</span></th>
             <th id="language_code" class="kintoneplugin-table-th"><span class="title">Language code</span></th>
-            <th class="kintoneplugin-table-th"><span class="title">Button label</span></th>
+            <th class="kintoneplugin-table-th"><span class="title">表示言語ラベル</span></th>
           </tr>
         </thead>
         <tbody id="kintoneplugin-setting-tbody">
@@ -153,11 +153,11 @@
     </div>
 
     <div class="reset-container">
-      <button type="button" class="kintoneplugin-button-dialog-ok reset-btn">Reflection <span>&#8595;</span></button>  
+      <button type="button" class="kintoneplugin-button-dialog-ok reset-btn">反映 <span>&#8595;</span></button>  
     </div>
 
     <div class="block">
-      <div class="kintoneplugin-title">Default Language</div> 
+      <div class="kintoneplugin-title">表示言語</div> 
       <div class="lang-content">
         <div id="select-1" class="kintoneplugin-select-outer">
           <div class="kintoneplugin-select">
@@ -170,13 +170,13 @@
     </div>
     <br>
 
-    <div class="kintoneplugin-title">Translate fields</div> 
+    <div class="kintoneplugin-title">翻訳項目定義</div> 
     <div class="kintoneplugin-input-outer">
       <table class="kintoneplugin-table" id="table_translate_field">
         <thead>
           <tr>
-            <th class="kintoneplugin-table-th"><span class="title">ITEM <span class="kintoneplugin-require">*</span></span></th>
-            <th class="kintoneplugin-table-th"><span class="title">Space placement for button</span></th>
+            <th class="kintoneplugin-table-th"><span class="title">項目コード<span class="kintoneplugin-require">*</span></span></th>
+            <th class="kintoneplugin-table-th"><span class="title">ボタン配置スペース</span></th>
             <th class="kintoneplugin-table-th-blankspace"></th>
           </tr>
         </thead>
@@ -216,8 +216,8 @@
     </div>
 
     <p id="button" class="kintoneplugin-row">
-        <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel" id="cancel">Cancel</button>
-        <button type="button" class="kintoneplugin-button-dialog-ok" id="save">Save</button>
+        <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel" id="cancel">キャンセル</button>
+        <button type="button" class="kintoneplugin-button-dialog-ok" id="save">保存</button>
     </p>
   </form>
 </section>
