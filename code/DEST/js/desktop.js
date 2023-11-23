@@ -127,14 +127,15 @@ jQuery.noConflict();
                         let subtable = getTableCodeByField(record, data.var); //get table code by fieldCode
                         let tableIndex = $(e.target).closest('tr').index(); //get row index in subtable
                         customContextMenu.remove(); //remove contextMenu
-                        await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex);
-                        Swal10.fire({
-                          position: "center-center",
-                          icon: "success",
-                          text: "翻訳完了しました",
-                          showConfirmButton: false,
-                          timer: 1000
-                        });
+                        await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex).then(() => {
+                          Swal10.fire({
+                            position: "center-center",
+                            icon: "success",
+                            text: "翻訳完了しました",
+                            showConfirmButton: false,
+                            timer: 1000
+                          });
+                        })
                       } catch (error) {
                         return Swal10.fire({
                           icon: "error",
@@ -216,15 +217,15 @@ jQuery.noConflict();
                 if (!srcField || !targetField) continue;
                 let fieldType = findPropertyById(record, srcField).type;
                 let subTable = getTableCodeByField(record, srcField);
-                await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1);
-                Swal10.fire({
-                  position: "center-center",
-                  icon: "success",
-                  text: "翻訳完了しました",
-                  showConfirmButton: false,
-                  timer: 1000
+                await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1).then(() => {
+                  Swal10.fire({
+                    position: "center-center",
+                    icon: "success",
+                    text: "翻訳完了しました",
+                    showConfirmButton: false,
+                    timer: 1000
+                  });
                 });
-                
               } catch (error) {
                 return Swal10.fire({
                   icon: "error",
