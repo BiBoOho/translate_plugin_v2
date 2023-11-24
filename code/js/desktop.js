@@ -242,7 +242,7 @@ jQuery.noConflict();
                 return Swal10.fire({
                   icon: "error",
                   title: "",
-                  html: error.message || error,
+                  html: 'tesssssssssssssst',
                 });
               }
             }
@@ -305,16 +305,16 @@ jQuery.noConflict();
             case 'from':  //translate from target field to srcfield
               if (srcField) {
                 resText = await window.BoK.eAutoTrans.transText(srcLang, resp.record[targetField].value || '', destLang, fieldType);
-                  resp.record[srcField].value = resText;
-                  kintone.app.record.set(resp);
+                resp.record[srcField].value = resText;
+                kintone.app.record.set(resp);
               }
               break;
             //translateDirection 'to' case
             case 'to':  //translate from srcfield to targetfield
               if (targetField) {
                 resText = await window.BoK.eAutoTrans.transText(destLang, resp.record[srcField].value || '', srcLang, fieldType);
-                  resp.record[targetField].value = resText;
-                  kintone.app.record.set(resp);
+                resp.record[targetField].value = resText;
+                kintone.app.record.set(resp);
               }
               break;
             default:
