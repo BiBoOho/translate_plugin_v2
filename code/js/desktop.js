@@ -7,7 +7,7 @@ jQuery.noConflict();
   const LANGUAGE_LIST = JSON.parse(CONFIG.language_list);               //get language list from config
   if (!CONFIG || !LANGUAGE_LIST || !TRANSLATE_FIELDS) return;         //check G_CONFIG, G_LANGUAGE_LIST, and G_TRANSLATE_FIELDS
   const ISO_DEFAULT = CONFIG.default_language || LANGUAGE_LIST[0].iso;
-
+  let ERRORFIELDS=[];
   kintone.events.on('app.record.detail.show', function () {
     try {
       window.BoK.eAutoTrans.showLang(ISO_DEFAULT);
@@ -49,6 +49,8 @@ jQuery.noConflict();
         }
       }
     }
+    console.log('data:',data);
+    console.log('fieldCode:',fieldCode);
     return null; // Return null if not found
   }
   //get table code by field in subtable
@@ -75,13 +77,16 @@ jQuery.noConflict();
       //check and hide fields
       window.BoK.eAutoTrans.showLang(ISO_DEFAULT);
 
-
       for await (let item of TRANSLATE_FIELDS) {
         if (item.space_element) continue; //skip loop when have space_element 
         for (let j = 0; j < item.target_fields.length; j++) {
           let fieldEl = item.target_fields[j];
+          if (!fieldEl.field || fieldEl.field=='') continue;
           let data = getFieldData(schemaPage, fieldEl.field); //find object element in schema by field
-          if (data == null || !fieldEl.field) continue;
+          if(data == null){
+            // ERRORFIELDS.push(fieldEl.field);
+            continue;
+          }
           let fieldSelector = `.field-${data.id}`;
           //check field iso have equal G_ISO_DEFAULT
           if (fieldEl.iso.toUpperCase() === ISO_DEFAULT.toUpperCase()) {
@@ -121,7 +126,6 @@ jQuery.noConflict();
                     customContextMenu.append(hoverBtn);
                     //add event handler to button
                     $(hoverBtn).on('click', async () => {
-                      let showAlert = true;
                       try {
                         const destLang = field.iso;   //filter for get lang code2 in config for use in api 
                         let fieldType = findPropertyById(record, srcField).type //get field type from record by src field
@@ -130,24 +134,29 @@ jQuery.noConflict();
                         customContextMenu.remove(); //remove contextMenu
                         await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex)
                       } catch (error) {
-                        showAlert = false;
-                        return Swal10.fire({
+                        Swal10.fire({
                           icon: "error",
                           title: "",
-                          html: error.message || error || "項目コードが存在しません",
+                          html: error.message || error
                         });
+                        return;
                       }
-
-                      if (showAlert) {
-                        Swal10.fire({
-                          position: "center-center",
-                          icon: "success",
-                          text: "翻訳完了しました",
-                          showConfirmButton: false,
-                          timer: 1000
-                        });
-                      }
-
+                      // if(ERRORFIELDS.length>0){
+                      //   Swal10.fire({
+                      //     icon: "error",
+                      //     title: "",
+                      //     html: `フィールドコード${ERRORFIELDS.join(",")}が存在しません`,
+                      //   });
+                      //   ERRORFIELDS = [];
+                      //   return;
+                      // }
+                      Swal10.fire({
+                        position: "center-center",
+                        icon: "success",
+                        text: "翻訳完了しました",
+                        showConfirmButton: false,
+                        timer: 1000
+                      });
                     })
                   }
                 });
@@ -213,18 +222,23 @@ jQuery.noConflict();
           //add event to button
           $(btn).on('click', async function (e) {
             const filteredItems = TRANSLATE_FIELDS.filter(value => value.space_element === space);   
-            let alertShown = true;                                       //filter object that have space_element = space
+          //filter object that have space_element = space
             for (let i = 0; i < filteredItems.length; i++) {
               try {
                 const destLang = LANGUAGE_LIST.filter(item => item.button_label === e.target.text)[0].iso;                                    //filter for get lang code2 in config for use in api
                 let srcField = filteredItems[i].target_fields.filter(item => item.iso.toUpperCase() === ISO_DEFAULT.toUpperCase())[0].field;  //get src fieldcode from filteredItem
                 let targetField = filteredItems[i].target_fields.filter(item => item.iso.toUpperCase() === destLang.toUpperCase())[0].field;  //get target fieldcode from filteredItem
                 if (!srcField || !targetField) continue;
+                let targetData = getFieldData(schemaPage, srcField); //find object element in schema by field
+                let srcData = getFieldData(schemaPage, targetField); 
+                if(srcData == null||targetData==null){
+                  // ERRORFIELDS.push(fieldEl.field);
+                  continue;
+                }
                 let fieldType = findPropertyById(record, srcField).type;
                 let subTable = getTableCodeByField(record, srcField);
                 await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1);
               } catch (error) {
-                alertShown = false;
                 return Swal10.fire({
                   icon: "error",
                   title: "",
@@ -233,19 +247,25 @@ jQuery.noConflict();
               }
             }
             //alert when translated successfully
-            if (alertShown) {
-              Swal10.fire({
-                position: "center-center",
-                icon: "success",
-                text: "翻訳完了しました", // Translation: Translation completed
-                showConfirmButton: false,
-                timer: 1000,
-              });
-            }
+            // if(ERRORFIELDS.length>0){
+            //   Swal10.fire({
+            //     icon: "error",
+            //     title: "",
+            //     html: `フィールドコード${ERRORFIELDS.join(",")}が存在しません`,
+            //   });
+            //   ERRORFIELDS = [];
+            //   return;
+            // }
+            Swal10.fire({
+              position: "center-center",
+              icon: "success",
+              text: "翻訳完了しました",
+              showConfirmButton: false,
+              timer: 1000
+            });
           });
 
         });
-
       });
 
       //create a function translation 
@@ -263,25 +283,16 @@ jQuery.noConflict();
               case 'from':                                //translate from target field to srcfield
                 if (srcField) {
                   resText = await window.BoK.eAutoTrans.transText(srcLang, tableValue[row].value[targetField].value || '', destLang, fieldType);
-                  // kintone.app.record.set(event, tableValue[row].value[srcField].value = resText);
-                  try {
-                    tableValue[row].value[srcField].value = resText;
-                    kintone.app.record.set(resp);
-                  } catch (error) {
-                    throw new Error(`フィールドコード${srcField}が存在しません`);
-                  }
+                  tableValue[row].value[srcField].value = resText;
+                  kintone.app.record.set(resp);
                 }
                 break;
               //translateDirection 'to' case
               case 'to':  //translate from srcfield to targetfield
                 if (targetField) {
                   resText = await window.BoK.eAutoTrans.transText(destLang, tableValue[row].value[srcField].value || '', srcLang, fieldType);
-                  try {
-                    tableValue[row].value[targetField].value = resText;
-                    kintone.app.record.set(resp);
-                  } catch (error) {
-                    throw new Error(`フィールドコード${targetField}が存在しません`);
-                  }
+                  tableValue[row].value[targetField].value = resText;
+                  kintone.app.record.set(resp);
                 }
                 break;
               default:
@@ -294,25 +305,16 @@ jQuery.noConflict();
             case 'from':  //translate from target field to srcfield
               if (srcField) {
                 resText = await window.BoK.eAutoTrans.transText(srcLang, resp.record[targetField].value || '', destLang, fieldType);
-                try {
                   resp.record[srcField].value = resText;
                   kintone.app.record.set(resp);
-                } catch (error) {
-                  throw Error(`フィールドコード${srcField}が存在しません`);
-                }
-                
               }
               break;
             //translateDirection 'to' case
             case 'to':  //translate from srcfield to targetfield
               if (targetField) {
                 resText = await window.BoK.eAutoTrans.transText(destLang, resp.record[srcField].value || '', srcLang, fieldType);
-                try {
                   resp.record[targetField].value = resText;
                   kintone.app.record.set(resp);
-                } catch (error) {
-                  throw Error(`フィールドコード${targetField}が存在しません`);
-                }
               }
               break;
             default:
