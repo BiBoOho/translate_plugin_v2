@@ -38,29 +38,31 @@
               }
               return translatedText;
             case 'MULTI_LINE_TEXT':
-              texts = texts.replace('\n', ' ')
-
-              if (TRANSLATE_ENGINE_TYPE === 'google_tran_api') {
-                translatedText = `${await translateFunction.googleTrans(texts, srcLang, destLang)}\n`;
+              texts = texts.split('\n')
+              for await (let item of texts) {
+                if (!item) continue;
+                if (TRANSLATE_ENGINE_TYPE === 'google_tran_api') {
+                  let transText = await translateFunction.googleTrans(item, srcLang, destLang);
+                  if(typeof transText === 'object'){
+                    return transText;
+                  }
+                  translatedText += `${transText}\n`;
+                }
+                else if (TRANSLATE_ENGINE_TYPE === 'my_memory_api') {
+                  let transText = await translateFunction.myMemoryTrans(item, srcLang, destLang);
+                  if(typeof transText === 'object'){
+                    return transText;
+                  }
+                  translatedText += `${transText}\n`;
+                }
+                else if (TRANSLATE_ENGINE_TYPE === 'deepl_api') {
+                  let transText =  await translateFunction.myDeepLTrans(item, srcLang, destLang);
+                  if(typeof transText === 'object'){
+                    return transText;
+                  }
+                  translatedText += `${transText}\n`;
+                }
               }
-              else if (TRANSLATE_ENGINE_TYPE === 'my_memory_api') {
-                translatedText = `${await translateFunction.myMemoryTrans(texts, srcLang, destLang)}\n`;
-              }
-              else if (TRANSLATE_ENGINE_TYPE === 'deepl_api') {
-                translatedText = `${await translateFunction.myDeepLTrans(texts, srcLang, destLang)}\n`;
-              }
-              // for await (let item of texts) {
-              //   if (!item) continue;
-              //   if (TRANSLATE_ENGINE_TYPE === 'google_tran_api') {
-              //     translatedText += `${await translateFunction.googleTrans(item, srcLang, destLang)}\n`;
-              //   }
-              //   else if (TRANSLATE_ENGINE_TYPE === 'my_memory_api') {
-              //     translatedText += `${await translateFunction.myMemoryTrans(item, srcLang, destLang)}\n`;
-              //   }
-              //   else if (TRANSLATE_ENGINE_TYPE === 'deepl_api') {
-              //     translatedText += `${await translateFunction.myDeepLTrans(item, srcLang, destLang)}\n`;
-              //   }
-              // }
               return translatedText;
             case 'RICH_TEXT':
               const parser = new DOMParser();
@@ -195,11 +197,7 @@
         let url = TRANSLATE_ENGINE_URL;
         if (!url) return alert('Translate engine url not setting in config');
         let trans = await axios({ method: 'GET', url: `${url}/single?client=gtx&sl=${srcLang}&tl=${destLang}&dt=t&q=${srcText}` }).catch((err) => {
-          return Swal10.fire({
-            icon: "error",
-            title: "Error",
-            html: err.message || err,
-          });
+          throw new Error(err.message || err);
         })
 
         if (trans.status === 200) {
@@ -216,11 +214,13 @@
         } else {
           throw new Error('Translation request failed with status: ' + trans.status);
         }
-
       } catch (error) {
         console.error('Error:', error.message);
+        return {
+          status: 'error',
+          msg: error.message
+        }
       }
-
     },
 
     myMemoryTrans: async function (srcText, srcLang, destLang) {
@@ -228,11 +228,7 @@
         let url = TRANSLATE_ENGINE_URL;
         if (!url) return alert('Translate engine url not setting in config');
         let trans = await axios({ method: 'GET', url: `${url}/get?q=${srcText}&langpair=${srcLang}|${destLang}` }).catch((err) => {
-          return Swal10.fire({
-            icon: "error",
-            title: "Error",
-            html: err.message || err,
-          });
+          throw new Error(err.message || err);
         })
 
         if (trans.status === 200) {
@@ -254,8 +250,11 @@
         }
       } catch (error) {
         console.error('Error:', error.message);
+        return {
+          status: 'error',
+          msg: error.message
+        }
       }
-
     },
 
     myDeepLTrans: async function (destLang, srcText, srcLang) {
@@ -263,13 +262,8 @@
         let url = TRANSLATE_ENGINE_URL;
         let apiKey = '';
         if (!url) return alert('Translate engine url not setting in config');
-        // let url = apiUrl || 'https://api.mymemory.translated.net';
         let trans = await axios({ method: 'POST', url: `${url}/get?q=${srcText}&langpair=${srcLang}|${destLang}`, headers: { 'Authorization': `DeepL-Auth-Key ${apiKey}` } }).catch((err) => {
-          return Swal10.fire({
-            icon: "error",
-            title: "Error",
-            html: err.message || err,
-          });
+          throw new Error(err.message || err);
         })
 
         if (trans.status === 200) {
@@ -277,7 +271,6 @@
           // Calculate the leading and trailing spaces to restore
           var leadingSpaces = srcText.match(/^\s*/)[0];
           var trailingSpaces = srcText.match(/\s*$/)[0];
-
           // Return the translated text with the preserved spaces
           return leadingSpaces + txt + trailingSpaces;
           // return txt;
@@ -291,6 +284,10 @@
         }
       } catch (error) {
         console.error('Error:', error.message);
+        return {
+          status: 'error',
+          msg: error.message
+        }
       }
     }
   }

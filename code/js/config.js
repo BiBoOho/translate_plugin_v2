@@ -127,7 +127,6 @@ jQuery.noConflict();
               if (!engine.some(obj => obj.language === previous_value) && previous_value !== "-----") {
                 previous_value = "-----";
               }
-
                 $("#table_language_list tbody tr:eq("+rowLanguageIndex+")> td select[name='language-selection'] > option").remove();
                 $("#table_language_list tbody tr:eq("+rowLanguageIndex+")> td select[name='language-selection']").append(new Option('-----', '-----'));
   
@@ -575,7 +574,6 @@ jQuery.noConflict();
   
           //validate when have the same Item
           let space_length = $(`#table_translate_field tbody tr`).length;
-  
           let conditionForCheck = false;
           let ItemValueCheck = [];
           let rowItemValue = '';

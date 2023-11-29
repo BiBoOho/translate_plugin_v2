@@ -49,8 +49,6 @@ jQuery.noConflict();
         }
       }
     }
-    console.log('data:',data);
-    console.log('fieldCode:',fieldCode);
     return null; // Return null if not found
   }
   //get table code by field in subtable
@@ -132,7 +130,22 @@ jQuery.noConflict();
                         let subtable = getTableCodeByField(record, data.var); //get table code by fieldCode
                         let tableIndex = $(e.target).closest('tr').index(); //get row index in subtable
                         customContextMenu.remove(); //remove contextMenu
-                        await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex)
+                        let setTran = await setTranslate(fieldType, destLang, srcLang, subtable, srcField, targetField, tableIndex)
+                        // check if error
+                        if(typeof setTran === 'object'){
+                          return Swal10.fire({
+                            icon: "error",
+                            title: "",
+                            html: setTran.msg,
+                          });
+                        }
+                        Swal10.fire({
+                          position: "center-center",
+                          icon: "success",
+                          text: "翻訳完了しました",
+                          showConfirmButton: false,
+                          timer: 1000
+                        });
                       } catch (error) {
                         Swal10.fire({
                           icon: "error",
@@ -141,22 +154,6 @@ jQuery.noConflict();
                         });
                         return;
                       }
-                      // if(ERRORFIELDS.length>0){
-                      //   Swal10.fire({
-                      //     icon: "error",
-                      //     title: "",
-                      //     html: `フィールドコード${ERRORFIELDS.join(",")}が存在しません`,
-                      //   });
-                      //   ERRORFIELDS = [];
-                      //   return;
-                      // }
-                      Swal10.fire({
-                        position: "center-center",
-                        icon: "success",
-                        text: "翻訳完了しました",
-                        showConfirmButton: false,
-                        timer: 1000
-                      });
                     })
                   }
                 });
@@ -221,10 +218,10 @@ jQuery.noConflict();
 
           //add event to button
           $(btn).on('click', async function (e) {
-            const filteredItems = TRANSLATE_FIELDS.filter(value => value.space_element === space);   
-          //filter object that have space_element = space
-            for (let i = 0; i < filteredItems.length; i++) {
-              try {
+            try {
+              const filteredItems = TRANSLATE_FIELDS.filter(value => value.space_element === space);   
+            //filter object that have space_element = space
+              for (let i = 0; i < filteredItems.length; i++) {
                 const destLang = LANGUAGE_LIST.filter(item => item.button_label === e.target.text)[0].iso;                                    //filter for get lang code2 in config for use in api
                 let srcField = filteredItems[i].target_fields.filter(item => item.iso.toUpperCase() === ISO_DEFAULT.toUpperCase())[0].field;  //get src fieldcode from filteredItem
                 let targetField = filteredItems[i].target_fields.filter(item => item.iso.toUpperCase() === destLang.toUpperCase())[0].field;  //get target fieldcode from filteredItem
@@ -237,34 +234,32 @@ jQuery.noConflict();
                 }
                 let fieldType = findPropertyById(record, srcField).type;
                 let subTable = getTableCodeByField(record, srcField);
-                await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1);
-              } catch (error) {
-                return Swal10.fire({
-                  icon: "error",
-                  title: "",
-                  html: 'tesssssssssssssst',
-                });
+                let setTran = await setTranslate(fieldType, destLang, srcLang, subTable, srcField, targetField, -1);
+                // check if error
+                if(typeof setTran === 'object'){
+                  return Swal10.fire({
+                    icon: "error",
+                    title: "",
+                    html: setTran.msg,
+                  });
+                }
               }
+              //alert when translated successfully
+              Swal10.fire({
+                position: "center-center",
+                icon: "success",
+                text: "翻訳完了しました",
+                showConfirmButton: false,
+                timer: 1000
+              });
+            } catch (error) {
+              return Swal10.fire({
+                icon: "error",
+                title: "",
+                html: error.message || error,
+              });
             }
-            //alert when translated successfully
-            // if(ERRORFIELDS.length>0){
-            //   Swal10.fire({
-            //     icon: "error",
-            //     title: "",
-            //     html: `フィールドコード${ERRORFIELDS.join(",")}が存在しません`,
-            //   });
-            //   ERRORFIELDS = [];
-            //   return;
-            // }
-            Swal10.fire({
-              position: "center-center",
-              icon: "success",
-              text: "翻訳完了しました",
-              showConfirmButton: false,
-              timer: 1000
-            });
           });
-
         });
       });
 
@@ -283,6 +278,10 @@ jQuery.noConflict();
               case 'from':                                //translate from target field to srcfield
                 if (srcField) {
                   resText = await window.BoK.eAutoTrans.transText(srcLang, tableValue[row].value[targetField].value || '', destLang, fieldType);
+                  // check if error
+                  if(typeof resText === 'object'){
+                    return resText;
+                  }
                   tableValue[row].value[srcField].value = resText;
                   kintone.app.record.set(resp);
                 }
@@ -291,6 +290,10 @@ jQuery.noConflict();
               case 'to':  //translate from srcfield to targetfield
                 if (targetField) {
                   resText = await window.BoK.eAutoTrans.transText(destLang, tableValue[row].value[srcField].value || '', srcLang, fieldType);
+                  // check if error
+                  if(typeof resText === 'object'){
+                    return resText;
+                  }
                   tableValue[row].value[targetField].value = resText;
                   kintone.app.record.set(resp);
                 }
@@ -305,6 +308,10 @@ jQuery.noConflict();
             case 'from':  //translate from target field to srcfield
               if (srcField) {
                 resText = await window.BoK.eAutoTrans.transText(srcLang, resp.record[targetField].value || '', destLang, fieldType);
+                // check if error
+                if(typeof resText === 'object'){
+                  return resText;
+                }
                 resp.record[srcField].value = resText;
                 kintone.app.record.set(resp);
               }
@@ -313,6 +320,10 @@ jQuery.noConflict();
             case 'to':  //translate from srcfield to targetfield
               if (targetField) {
                 resText = await window.BoK.eAutoTrans.transText(destLang, resp.record[srcField].value || '', srcLang, fieldType);
+                // check if error
+                if(typeof resText === 'object'){
+                  return resText;
+                }
                 resp.record[targetField].value = resText;
                 kintone.app.record.set(resp);
               }
